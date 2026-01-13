@@ -1,4 +1,4 @@
-package com.elbuensabor.reservas.administrador.data;
+package com.elbuensabor.reservas.administrador.data.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
