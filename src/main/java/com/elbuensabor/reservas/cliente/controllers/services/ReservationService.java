@@ -1,16 +1,14 @@
 package com.elbuensabor.reservas.cliente.controllers.services;
 
-import java.sql.Date;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.elbuensabor.reservas.cliente.data.entities.ReservaEntity;
-import com.elbuensabor.reservas.cliente.logic.usercases.GetAllReservations;
+import com.elbuensabor.reservas.cliente.controllers.converters.ResultAPI;
+import com.elbuensabor.reservas.cliente.logic.usercases.GetAllReservationsUserCase;
+import com.elbuensabor.reservas.cliente.logic.usercases.GetReservationUserCase;
 import com.elbuensabor.reservas.cliente.logic.usercases.MakeReservationUserCase;
 
 @RestController
@@ -20,27 +18,43 @@ public class ReservationService {
     private MakeReservationUserCase userCase;
 
     @Autowired
-    private GetAllReservations getAllReservationsCase;
+    private GetAllReservationsUserCase getAllReservationsCase;
+
+    @Autowired
+    GetReservationUserCase getReservationInfo;
 
     @GetMapping("/make-reservation")
-    public String makeReservation(
+    public ResultAPI makeReservation(
             @RequestParam("name") String userName,
             @RequestParam("date") String fechaReservaString,
             @RequestParam("people") int numeroComensales) {
 
-        Date fechaReserva = Date.valueOf(fechaReservaString);
-        var reserva = userCase.makeReservation(userName, fechaReserva, numeroComensales);
+        var reserva = userCase.makeReservation(userName, fechaReservaString, numeroComensales);
 
         return reserva.fold(
-                val -> val.getReservaId().toString(),
-                ex -> ex.getMessage());
+                val -> new ResultAPI(val.getReservaId().toString()),
+                ex -> new ResultAPI(ex.getMessage()));
     }
 
     @GetMapping("/all-reservations")
-    public List<ReservaEntity> getAllReservations() {
+    public ResultAPI getAllReservations() {
         return getAllReservationsCase.getAllReservs().fold(
-                val -> val,
-                ex -> List.of());
+                val -> new ResultAPI(val),
+                ex -> new ResultAPI(ex.getMessage()));
+    }
+
+    @GetMapping("/all-reservations/{page}")
+    public ResultAPI getAllReservations(@PathVariable("page") int page) {
+        return getAllReservationsCase.getAllReservsPagginResult(page).fold(
+                val -> new ResultAPI(val),
+                ex -> new ResultAPI(ex.getMessage()));
+    }
+
+    @GetMapping("/get-reservation/{reservaId}")
+    public ResultAPI getReservation(@PathVariable("reservaId") String reservaId) {
+        return getReservationInfo.invoke(reservaId).fold(
+                val -> new ResultAPI(val),
+                ex -> new ResultAPI(ex.getMessage()));
     }
 
 }
