@@ -2,14 +2,19 @@ package com.elbuensabor.reservas.cliente.logic.usercases;
 
 import java.sql.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.elbuensabor.reservas.cliente.data.entities.ReservaEntity;
-import com.elbuensabor.reservas.cliente.data.repository.ReservationRepository;
+import com.elbuensabor.reservas.cliente.data.repository.ReservaRepository;
 import com.elbuensabor.reservas.cliente.logic.validators.Result;
 import com.elbuensabor.reservas.cliente.logic.validators.UUIDReservers;
 
-import jakarta.persistence.EntityManager;
-
+@Service
 public class MakeReservationUserCase {
+
+    @Autowired
+    private ReservaRepository reservaRepository;
 
     public Result<ReservaEntity> makeReservation(
             String userName,
@@ -27,19 +32,11 @@ public class MakeReservationUserCase {
 
         // Insertar la reserva en la base de datos
         Result<ReservaEntity> result = null;
-        EntityManager em = ReservationRepository.getEntityManager();
-        if (em != null) {
-            try {
-                em.getTransaction().begin();
-                em.persist(reserva);
-                em.getTransaction().commit();
-                result = Result.success(reserva);
-            } catch (Exception ex) {
-                em.getTransaction().rollback();
-                result = Result.failure(ex);
-            }
-        } else {
-            result = Result.failure(new Exception("Error con la base de datos."));
+        try {
+            var reservaSaved = reservaRepository.save(reserva);
+            result = Result.success(reservaSaved);
+        } catch (Exception e) {
+            result = Result.failure(e);
         }
         return result;
     }
