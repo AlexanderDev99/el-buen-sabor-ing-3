@@ -18,23 +18,26 @@ public class MakeReservationUserCase {
 
     public Result<ReservaEntity> makeReservation(
             String userName,
-            Date fechaReserva,
+            String fechaReservaString,
             int numeroComensales) {
 
-        var reservaBuilder = ReservaEntity.builder()
-                .userName(userName)
-                .fechaReserva(fechaReserva)
-                .estadoReserva("PENDIENTE")
-                .mesaReservada(-1)
-                .numeroComensales(numeroComensales);
-        reservaBuilder.reservaId(UUIDReservers.generateRandomCode());
-        var reserva = reservaBuilder.build();
-
-        // Insertar la reserva en la base de datos
         Result<ReservaEntity> result = null;
+        
         try {
+            Date fechaReserva = Date.valueOf(fechaReservaString);
+            var reservaBuilder = ReservaEntity.builder()
+                    .userName(userName)
+                    .fechaReserva(fechaReserva)
+                    .estadoReserva("PENDIENTE")
+                    .mesaReservada(-1)
+                    .numeroComensales(numeroComensales);
+            reservaBuilder.reservaId(UUIDReservers.generateRandomCode());
+            var reserva = reservaBuilder.build();
+
+            // Insertar la reserva en la base de datos
             var reservaSaved = reservaRepository.save(reserva);
             result = Result.success(reservaSaved);
+            
         } catch (Exception e) {
             result = Result.failure(e);
         }
