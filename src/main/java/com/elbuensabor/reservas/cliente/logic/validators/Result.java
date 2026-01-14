@@ -17,6 +17,7 @@ public sealed interface Result<T> {
 
     // Método estático para crear fallos
     static <T> Result<T> failure(Throwable exception) {
+        System.err.println(exception.getMessage());
         return new Failure<>(exception);
     }
 
