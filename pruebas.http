@@ -24,3 +24,41 @@ PUT {{url}}/reservation/complete-reservation/B3MCTU
 ### PRUEBA 7: Modificar una reserva existente
 PUT  {{url}}/reservation/modify-reservation/B3MCTU?name=Edwin Modified&date=2027-02-15&state=CANCELADA&table=1&people=3
 
+### PRUEBA 8: Registrar un nuevo usuario (CDU01)
+POST {{url}}/auth/registro
+Content-Type: application/json
+
+{
+    "nombreUsuario": "Alexander",
+    "apellidoUsuario": "Nuevo",
+    "emailUsuario": "nuevo@correo.com",
+    "passwordUsuario": "123456789",
+    "passwordConfirmar": "123456789"
+}
+
+### PRUEBA 8: Error en Registro (Contraseñas no coinciden)
+POST {{url}}/auth/registro
+Content-Type: application/json
+
+{
+    "nombreUsuario": "Test",
+    "apellidoUsuario": "Error",
+    "emailUsuario": "prueba@correo.com",
+    "passwordUsuario": "123",
+    "passwordConfirmar": "999"
+}
+
+### PRUEBA 9: Error en Registro (Email ya existe)
+POST {{url}}/auth/registro
+Content-Type: application/json
+
+{
+    "nombreUsuario": "Test",
+    "apellidoUsuario": "Error",
+    "emailUsuario": "prueba@correo.com",
+    "passwordUsuario": "123",
+    "passwordConfirmar": "123"
+}
+
+### PRUEBA 10: Listar todos los usuarios (CDU02)
+GET {{url}}/auth/users
