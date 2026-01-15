@@ -9,9 +9,9 @@ import com.elbuensabor.reservas.cliente.data.repository.ReservaRepository;
 import com.elbuensabor.reservas.cliente.logic.validators.Result;
 
 @Service
-public class estateReservationsUserCase {
+public class EstateReservationsUserCase {
 
-     @Autowired
+    @Autowired
     private ReservaRepository repoReserva;
 
     public Result<ReservaUI> calcelReservation(String reservaId) {
@@ -33,6 +33,7 @@ public class estateReservationsUserCase {
         try {
             var reservaComplete = repoReserva.findByReservaId(reservaId);
             reservaComplete.setEstadoReserva("COMPLETADA");
+            reservaComplete.setMesaReservada(1);
             repoReserva.save(reservaComplete);
             var reservaUI = EntityConvertes.ReservationEntityToUI(reservaComplete);
             result = Result.success(reservaUI);
@@ -41,5 +42,7 @@ public class estateReservationsUserCase {
         }
         return result;
     }
+
+    
 
 }

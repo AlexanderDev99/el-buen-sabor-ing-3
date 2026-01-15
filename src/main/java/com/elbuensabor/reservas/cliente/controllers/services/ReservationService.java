@@ -13,7 +13,8 @@ import com.elbuensabor.reservas.cliente.controllers.converters.ResultAPI;
 import com.elbuensabor.reservas.cliente.logic.usercases.GetAllReservationsUserCase;
 import com.elbuensabor.reservas.cliente.logic.usercases.GetReservationUserCase;
 import com.elbuensabor.reservas.cliente.logic.usercases.MakeReservationUserCase;
-import com.elbuensabor.reservas.cliente.logic.usercases.estateReservationsUserCase;
+import com.elbuensabor.reservas.cliente.logic.usercases.ModifyReservationCase;
+import com.elbuensabor.reservas.cliente.logic.usercases.EstateReservationsUserCase;
 
 @RestController
 @RequestMapping("/api/reservation")
@@ -29,7 +30,10 @@ public class ReservationService {
     GetReservationUserCase getReservationInfo;
 
     @Autowired
-    private estateReservationsUserCase stateReservationCase;
+    private EstateReservationsUserCase stateReservationCase;
+
+    @Autowired
+    private ModifyReservationCase modifyReservationCase;
 
     //Crear reservas
     @PostMapping("/make-reservation")
@@ -84,5 +88,22 @@ public class ReservationService {
                 val -> new ResultAPI(val),
                 ex -> new ResultAPI(ex.getMessage()));
     }
+
+    //Modificar una reserva por ID
+    @PutMapping("/modify-reservation/{reservaId}")
+    public ResultAPI modifyReservation(
+            @PathVariable("reservaId") String reservaId,
+            @RequestParam("name") String newUserName,
+            @RequestParam("date") String newDateString,
+            @RequestParam("state") String newState,
+            @RequestParam("table") int newMesaReservada,
+            @RequestParam("people") int newPeopleCount) {
+
+        return modifyReservationCase.modifyReservation(reservaId, newUserName, java.sql.Date.valueOf(newDateString), newState, newMesaReservada, newPeopleCount).fold(
+                val -> new ResultAPI(val),
+                ex -> new ResultAPI(ex.getMessage()));
+    }
+
+
 
 }

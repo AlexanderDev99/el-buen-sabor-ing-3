@@ -2,7 +2,7 @@
 @url = http://localhost:8080/api
 
 ### HACER RESERVAS
-POST  {{url}}/reservation/make-reservation?name=Edwin DLC&date=2027-01-03&people=10
+POST  {{url}}/reservation/make-reservation?name=Alexander DLC&date=2026-01-14&people=7
 Content-Type: application/json
 
 ### PRUEBA 2: Ver todas las reservas (CDU03)
@@ -11,11 +11,16 @@ GET {{url}}/reservation/all-reservations
 ### PRUEBA 3: Ver reservas con paginación
 GET {{url}}/reservation/all-reservations/1
 
-### PRUEBA 4: Obtener una reserva específica por Icodigo de reserva
-GET {{url}}/reservation/get-reservation/EHTTYP
+### PRUEBA 4: Obtener una reserva específica por codigo de reserva
+### codigo de reserva B3MCTU, cambiar segun las reservas creadas
+GET {{url}}/reservation/get-reservation/B3MCTU
 
 ### PRUEBA 5: Cancelar una reserva
-PUT {{url}}/reservation/cancel-reservation/EHTTYP
+PUT {{url}}/reservation/cancel-reservation/B3MCTU
 
 ### PRUEBA 6: Completar una reserva
-PUT {{url}}/reservation/complete-reservation/EHTTYP
+PUT {{url}}/reservation/complete-reservation/B3MCTU
+
+### PRUEBA 7: Modificar una reserva existente
+PUT  {{url}}/reservation/modify-reservation/B3MCTU?name=Edwin Modified&date=2027-02-15&state=CANCELADA&table=1&people=3
+
