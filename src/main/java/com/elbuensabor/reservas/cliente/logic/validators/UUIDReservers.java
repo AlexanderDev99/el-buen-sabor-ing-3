@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class UUIDReservers {
 
-     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final int CODE_LENGTH = 6;
     private static final Random random = new SecureRandom();
     

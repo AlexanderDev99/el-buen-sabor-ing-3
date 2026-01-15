@@ -3,6 +3,9 @@ package com.elbuensabor.reservas.cliente.controllers.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,8 +13,10 @@ import com.elbuensabor.reservas.cliente.controllers.converters.ResultAPI;
 import com.elbuensabor.reservas.cliente.logic.usercases.GetAllReservationsUserCase;
 import com.elbuensabor.reservas.cliente.logic.usercases.GetReservationUserCase;
 import com.elbuensabor.reservas.cliente.logic.usercases.MakeReservationUserCase;
+import com.elbuensabor.reservas.cliente.logic.usercases.estateReservationsUserCase;
 
 @RestController
+@RequestMapping("/api/reservation")
 public class ReservationService {
 
     @Autowired
@@ -23,7 +28,11 @@ public class ReservationService {
     @Autowired
     GetReservationUserCase getReservationInfo;
 
-    @GetMapping("/make-reservation")
+    @Autowired
+    private estateReservationsUserCase stateReservationCase;
+
+    //Crear reservas
+    @PostMapping("/make-reservation")
     public ResultAPI makeReservation(
             @RequestParam("name") String userName,
             @RequestParam("date") String fechaReservaString,
@@ -36,6 +45,7 @@ public class ReservationService {
                 ex -> new ResultAPI(ex.getMessage()));
     }
 
+    //Mostrar todas las reservas
     @GetMapping("/all-reservations")
     public ResultAPI getAllReservations() {
         return getAllReservationsCase.getAllReservs().fold(
@@ -43,6 +53,7 @@ public class ReservationService {
                 ex -> new ResultAPI(ex.getMessage()));
     }
 
+    //Mostrar todas las reservas con paginacion
     @GetMapping("/all-reservations/{page}")
     public ResultAPI getAllReservations(@PathVariable("page") int page) {
         return getAllReservationsCase.getAllReservsPagginResult(page).fold(
@@ -50,9 +61,26 @@ public class ReservationService {
                 ex -> new ResultAPI(ex.getMessage()));
     }
 
+    //Mostrar una reserva por ID
     @GetMapping("/get-reservation/{reservaId}")
     public ResultAPI getReservation(@PathVariable("reservaId") String reservaId) {
         return getReservationInfo.invoke(reservaId).fold(
+                val -> new ResultAPI(val),
+                ex -> new ResultAPI(ex.getMessage()));
+    }
+
+    //Cancelar una reserva por ID
+    @PutMapping("/cancel-reservation/{reservaId}")
+    public ResultAPI cancelReservation(@PathVariable("reservaId") String reservaId) {
+        return stateReservationCase.calcelReservation(reservaId).fold(
+                val -> new ResultAPI(val),
+                ex -> new ResultAPI(ex.getMessage()));
+    }
+
+    // Completar reserva por ID 
+    @PutMapping("/complete-reservation/{reservaId}")
+    public ResultAPI completeReservation(@PathVariable("reservaId") String reservaId) {
+        return stateReservationCase.completeReservation(reservaId).fold(
                 val -> new ResultAPI(val),
                 ex -> new ResultAPI(ex.getMessage()));
     }

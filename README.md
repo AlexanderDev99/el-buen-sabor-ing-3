@@ -14,5 +14,5 @@ las tecnologias usadas son las siguientes:
 * VS CODE
 
 ## Creacion de la Base de datos
-docker run -d --name elbuensaborApp -e MYSQL_ROOT_PASSWORD=admin -e MYSQL_DATABASE=elbuensabor_db -p 3306:3306 mysql
+docker run -d --name elbuensaborApp -e MYSQL_ROOT_PASSWORD=rootroot -p 3306:3306 mysql
 

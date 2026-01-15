@@ -1,0 +1,21 @@
+//Url del API
+@url = http://localhost:8080/api
+
+### HACER RESERVAS
+POST  {{url}}/reservation/make-reservation?name=Edwin DLC&date=2027-01-03&people=10
+Content-Type: application/json
+
+### PRUEBA 2: Ver todas las reservas (CDU03)
+GET {{url}}/reservation/all-reservations
+
+### PRUEBA 3: Ver reservas con paginación
+GET {{url}}/reservation/all-reservations/1
+
+### PRUEBA 4: Obtener una reserva específica por Icodigo de reserva
+GET {{url}}/reservation/get-reservation/EHTTYP
+
+### PRUEBA 5: Cancelar una reserva
+PUT {{url}}/reservation/cancel-reservation/EHTTYP
+
+### PRUEBA 6: Completar una reserva
+PUT {{url}}/reservation/complete-reservation/EHTTYP
