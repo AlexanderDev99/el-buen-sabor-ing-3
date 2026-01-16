@@ -1,13 +1,11 @@
 package com.elbuensabor.reservas.cliente.controllers.converters;
 
 import com.elbuensabor.reservas.cliente.controllers.data.ReservaUI;
-import com.elbuensabor.reservas.cliente.controllers.data.UsuarioUI;
-import com.elbuensabor.reservas.cliente.data.entities.ReservaEntity;
-import com.elbuensabor.reservas.cliente.data.entities.UsuarioEntity;
+import com.elbuensabor.reservas.cliente.data.entities.db.ReservaEntityDB;
 
 public class EntityConvertes {
 
-    public static ReservaUI ReservationEntityToUI(ReservaEntity reservaEntity) {
+    public static ReservaUI ReservationEntityToUI(ReservaEntityDB reservaEntity) {
         return new ReservaUI(
                 reservaEntity.getReservaId(),
                 reservaEntity.getUserName(),
@@ -16,14 +14,4 @@ public class EntityConvertes {
                 reservaEntity.getMesaReservada(),
                 reservaEntity.getNumeroComensales());
     }
-
-    public static UsuarioUI UsuarioEntityToUI(UsuarioEntity usuarioEntity) {
-        return new UsuarioUI(
-                usuarioEntity.getNombreUsuario(),
-                usuarioEntity.getApellidoUsuario(),
-                usuarioEntity.getEmailUsuario(),
-                usuarioEntity.getPasswordUsuario(),
-                usuarioEntity.getPasswordConfirmar());
-    }
-
 }
