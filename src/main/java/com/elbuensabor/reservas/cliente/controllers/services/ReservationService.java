@@ -36,7 +36,7 @@ public class ReservationService {
     private ModifyReservationCase modifyReservationCase;
 
     //Crear reservas
-    @PostMapping("/make-reservation")
+    @GetMapping("/make-reservation")
     public ResultAPI makeReservation(
             @RequestParam("name") String userName,
             @RequestParam("date") String fechaReservaString,

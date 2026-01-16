@@ -6,14 +6,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.elbuensabor.reservas.cliente.data.entities.ReservaEntity;
+import com.elbuensabor.reservas.cliente.data.entities.db.ReservaEntityDB;
 
 public interface ReservaRepository
-        extends JpaRepository<ReservaEntity, Integer> {
+        extends JpaRepository<ReservaEntityDB, Integer> {
 
-    @Query("SELECT r FROM ReservaEntity r WHERE r.reservaId = ?1")
-    public ReservaEntity findByReservaId(String reservaId);
+    @Query("SELECT r FROM ReservaEntityDB r WHERE r.reservaId = ?1")
+    public ReservaEntityDB findByReservaId(String reservaId);
 
-    @Query("SELECT r FROM ReservaEntity r")
-    public List<ReservaEntity> findAllPaging(Pageable pageable);
+    @Query("SELECT r FROM ReservaEntityDB r")
+    public List<ReservaEntityDB> findAllPaging(Pageable pageable);
 }

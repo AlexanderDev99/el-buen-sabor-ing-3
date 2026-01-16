@@ -2,44 +2,22 @@ package com.elbuensabor.reservas.cliente.logic.usercases;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import com.elbuensabor.reservas.cliente.controllers.converters.EntityConvertes;
-import com.elbuensabor.reservas.cliente.controllers.data.UsuarioUI;
-import com.elbuensabor.reservas.cliente.data.entities.UsuarioEntity;
-import com.elbuensabor.reservas.cliente.data.repository.UsuarioRepository;
+import com.elbuensabor.reservas.cliente.data.entities.apis.UserEntityAPI;
 import com.elbuensabor.reservas.cliente.logic.validators.Result;
 
 @Service
 public class RegisterUsuarioUserCase {
 
-    @Autowired
-    private UsuarioRepository repoUsuario;
-
-    public Result<UsuarioUI> registerUsuario(UsuarioEntity usuario) {
-
-        Result<UsuarioUI> result = null;
-
+    public Result<UserEntityAPI> execute(String idCliente) {
         try {
-
-        //Verificar que las contraseñas coincidan
-        if(!usuario.getPasswordUsuario().equals(usuario.getPasswordConfirmar())){
-            throw new Exception("Las contraseñas no coinciden");
-        }
-
-        //Verificar si el correo ya esxiste en el sistema 
-        if(repoUsuario.existsByEmailUsuario(usuario.getEmailUsuario())){
-            throw new Exception("El correo ya está registrado");
-        }
-        
-        //Registrar el nuevo usuario
-        repoUsuario.save(usuario);
-        var usuarioUI = EntityConvertes.UsuarioEntityToUI(usuario);
-        result = Result.success(usuarioUI);
+            RestTemplate restTemplate = new RestTemplate();
+            String url = "https://jsonplaceholder.typicode.com/users/" + idCliente;
+            UserEntityAPI user = restTemplate.getForObject(url, UserEntityAPI.class);
+            return Result.success(user);
         } catch (Exception e) {
-            result = Result.failure(e);
+            return Result.failure(e);
         }
-        return result;
     }
-
-
 }
