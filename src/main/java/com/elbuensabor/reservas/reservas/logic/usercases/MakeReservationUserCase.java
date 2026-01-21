@@ -28,11 +28,11 @@ public class MakeReservationUserCase {
         Result<ReservaEntityDB> result = null;
 
         try {
-            var userResult = usersInterface.GetInfoUsuario(userId);
+            var userResult = usersInterface.GetInfoUsuario(Integer.parseInt(userId));
 
             Date fechaReserva = Date.valueOf(fechaReservaString);
             var reservaBuilder = ReservaEntityDB.builder()
-                    .userName(userResult.name)
+                    .userName(userResult.name + " " + userResult.lastName)
                     .fechaReserva(fechaReserva)
                     .estadoReserva("PENDIENTE")
                     .mesaReservada(-1)
