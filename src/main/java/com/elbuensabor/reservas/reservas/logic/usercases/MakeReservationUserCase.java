@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.elbuensabor.reservas.reservas.data.entities.db.ReservaEntityDB;
 import com.elbuensabor.reservas.reservas.data.repository.ReservaRepository;
+import com.elbuensabor.reservas.reservas.logic.network.interfaces.UsersInterface;
 import com.elbuensabor.reservas.reservas.logic.validators.Result;
 import com.elbuensabor.reservas.reservas.logic.validators.UUIDReservers;
 
@@ -17,7 +18,7 @@ public class MakeReservationUserCase {
     private ReservaRepository reservaRepository;
 
     @Autowired
-    private GetInfoUsuarioUserCase registerUsuarioUserCase;
+    private UsersInterface usersInterface;
 
     public Result<ReservaEntityDB> execute(
             String userId,
@@ -26,12 +27,12 @@ public class MakeReservationUserCase {
 
         Result<ReservaEntityDB> result = null;
 
-        var userResult = registerUsuarioUserCase.execute(userId);
-
         try {
+            var userResult = usersInterface.GetInfoUsuario(userId);
+
             Date fechaReserva = Date.valueOf(fechaReservaString);
             var reservaBuilder = ReservaEntityDB.builder()
-                    .userName(userResult.getOrNull().name)
+                    .userName(userResult.name)
                     .fechaReserva(fechaReserva)
                     .estadoReserva("PENDIENTE")
                     .mesaReservada(-1)
