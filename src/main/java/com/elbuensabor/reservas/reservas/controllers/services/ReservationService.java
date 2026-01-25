@@ -16,7 +16,7 @@ import com.elbuensabor.reservas.reservas.logic.usercases.MakeReservationUserCase
 import com.elbuensabor.reservas.reservas.logic.usercases.ModifyReservationUserCase;
 
 @RestController
-@RequestMapping("/api/reservation")
+@RequestMapping("/api/reservas")
 public class ReservationService {
 
     @Autowired

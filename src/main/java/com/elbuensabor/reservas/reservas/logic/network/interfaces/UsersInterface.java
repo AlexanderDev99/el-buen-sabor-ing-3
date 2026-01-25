@@ -6,10 +6,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.elbuensabor.reservas.reservas.data.entities.apis.UserEntityAPI;
 
-@FeignClient(name = "USUARIO-SERVICE")
+
+//Interfaz de comunicación con el servicio de usuarios
+@FeignClient(name = "usuario-service")
 public interface UsersInterface {
 
-    @GetMapping("/usuario/buscar")
+    @GetMapping("/api/usuarios/buscar")
     UserEntityAPI GetInfoUsuario(@RequestParam("id") Integer idCliente);
 
 }
